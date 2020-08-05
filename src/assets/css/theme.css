@@ -1,0 +1,14 @@
+.sidenav .sidenav-menu .sidenav-menu-nested {
+  flex-direction: column;
+  width: 6.5rem;
+}
+
+.action-checkbox-column {
+  width: 1.5rem;
+  text-align: center;
+}
+
+.sidenav .sidenav-menu .sidenav-menu-nested ul li a {
+  padding-top: 0.7rem;
+  padding-bottom: 0.7rem;
+}
