@@ -35,7 +35,7 @@ class SideBar extends React.Component {
                             </NavLink>
                         </li>
                         <li className="nav-item" role="presentation">
-                            <NavLink className="nav-link" activeClassName="active" to="table.html">
+                            <NavLink className="nav-link" activeClassName="active" to="/tasks">
                                 <i className="fas fa-table"></i><span>Tasks</span>
                             </NavLink>
                         </li>

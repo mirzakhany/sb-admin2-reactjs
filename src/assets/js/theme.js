@@ -13,9 +13,9 @@ import jQuery from 'jquery'
   // });
     
   // Toggle table checkboxes
-  $("#table-action-checkbox").on('click', function(e) {
-      $('.row-checkbox').prop("checked", $(this).prop("checked"));
-  });
+  // $("#table-action-checkbox").on('click', function(e) {
+  //     $('.row-checkbox').prop("checked", $(this).prop("checked"));
+  // });
 
   // Close any open menu accordions when window is resized below 768px
   $(window).resize(function() {

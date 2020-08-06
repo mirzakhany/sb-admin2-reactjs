@@ -2,7 +2,7 @@ import React from 'react';
 import {Switch, Redirect} from 'react-router-dom';
 import {RouteWithLayout} from './components';
 import {AdminLayout} from './layouts'
-import {Dashboard, Profile, NotFound} from './pages'
+import {Dashboard, Profile,TaskList, NotFound} from './pages'
 
 const Routes = () => {
     return (
@@ -17,6 +17,12 @@ const Routes = () => {
                 exact
                 layout={AdminLayout}
                 path="/dashboard"
+            />
+            <RouteWithLayout
+                component={TaskList}
+                exact
+                layout={AdminLayout}
+                path="/tasks"
             />
             <RouteWithLayout
                 component={Profile}
