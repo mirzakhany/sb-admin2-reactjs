@@ -1,85 +1,71 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 
-class Paginator extends React.Component {
+const Paginator = props => {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            perPage: props.perPage,
-            currentPage: 1
-        }
-    }
+    const {items, perPage, onPageChange} = props;
+    const [currentPage, setCurrentPage] = useState(1);
 
-    componentDidUpdate(prevProps) {
-        if (prevProps.items !== this.props.items) {
-            this.props.onPageChange({
-                    currentPage: this.state.currentPage,
-                    fromItem: 1,
-                    toItem: this.state.perPage,
-                    totalItems: this.props.items.length,
-                    items: this.props.items.slice(0, this.state.perPage)
-                }
-            )
-        }
-    }
+    useEffect(() =>{
+        onPageChange({
+            currentPage: currentPage,
+            fromItem: 1,
+            toItem: perPage,
+            totalItems: items.length,
+            items: items.slice(0, perPage)
+        })
+    }, [items])
 
-    goToPage(pageNumber) {
-        if (pageNumber !== this.state.currentPage){
-            const startPage = (pageNumber -1 ) * this.state.perPage;
-            const toPage = startPage + this.state.perPage;
-            this.setState({
-                startPage: startPage,
-                toPage: toPage,
-                currentPage: pageNumber
-            })
+    const goToPage = (pageNumber) =>{
+        if (pageNumber !== currentPage){
+            const _startPage = (pageNumber -1 ) * perPage;
+            const _toPage = _startPage + perPage;
+            setCurrentPage(pageNumber);
 
-            this.props.onPageChange({
+            onPageChange({
                 currentPage: pageNumber,
-                fromItem: startPage + 1,
-                toItem: toPage > this.props.items.length ? this.props.items.length: toPage,
-                totalItems: this.props.items.length,
-                items: this.props.items.slice(startPage, toPage)
+                fromItem: _startPage + 1,
+                toItem: _toPage > items.length ? items.length: _toPage,
+                totalItems: items.length,
+                items: items.slice(_startPage, _toPage)
             })
         }
     }
 
-    renderItems() {
-        let items = [];
-        const lastPage = Math.ceil(this.props.items.length / this.state.perPage);
-        items.push(
-            <li className={`page-item ${this.state.currentPage > 1 ? '': 'disabled' }` }>
-                <a className="page-link" href="#" onClick={() => this.goToPage(this.state.currentPage-1)} aria-label="Previous">
+    const renderItems = () => {
+        let pagerItems = [];
+        const lastPage = Math.ceil(items.length / perPage);
+        pagerItems.push(
+            <li className={`page-item ${currentPage > 1 ? '': 'disabled' }` }>
+                <a className="page-link" href="#" onClick={() => goToPage(currentPage-1)} aria-label="Previous">
                     <span aria-hidden="true">«</span>
                 </a>
             </li>
         )
         for (let i=1; i <= lastPage;i++){
-            items.push(
-                <li key={i} className={`page-item ${i===this.state.currentPage? 'active': '' }`}>
-                    <a className="page-link" href="#" onClick={() => this.goToPage(i)}>{i}</a>
+            pagerItems.push(
+                <li key={i} className={`page-item ${i===currentPage? 'active': '' }`}>
+                    <a className="page-link" href="#" onClick={() => goToPage(i)}>{i}</a>
                 </li>
             )
         }
-        items.push(
-            <li className={`page-item ${this.state.currentPage < lastPage ? '': 'disabled' }` }>
-                <a className="page-link" href="#" onClick={() => this.goToPage(this.state.currentPage+1)} aria-label="Next">
+        pagerItems.push(
+            <li className={`page-item ${currentPage < lastPage ? '': 'disabled' }` }>
+                <a className="page-link" href="#" onClick={() => goToPage(currentPage+1)} aria-label="Next">
                     <span aria-hidden="true">»</span>
                 </a>
             </li>
         )
-        return items
+        return pagerItems
     }
 
-    render() {
-        return (
-            <nav
-                className="d-lg-flex justify-content-lg-end dataTables_paginate paging_simple_numbers">
-                <ul className="pagination">
-                    {this.renderItems()}
-                </ul>
-            </nav>
-        )
-    }
+    return (
+        <nav
+            className="d-lg-flex justify-content-lg-end dataTables_paginate paging_simple_numbers">
+            <ul className="pagination">
+                {renderItems()}
+            </ul>
+        </nav>
+    )
 }
 
 export default Paginator;
