@@ -4,7 +4,7 @@ import Fuse from 'fuse.js'
 
 const SearchInput = props => {
 
-    const {className, placeHolder, searchOptions, searchThreshold, items, onSearch, ...rest } = props;
+    const {className, placeHolder, searchOptions, searchThreshold, items, onSearch } = props;
     const [value, setValue] = useState("");
 
     useEffect(() => {

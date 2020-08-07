@@ -35,24 +35,24 @@ const Paginator = props => {
         let pagerItems = [];
         const lastPage = Math.ceil(items.length / perPage);
         pagerItems.push(
-            <li className={`page-item ${currentPage > 1 ? '': 'disabled' }` }>
-                <a className="page-link" href="#" onClick={() => goToPage(currentPage-1)} aria-label="Previous">
+            <li key={"pre-page"} className={`page-item ${currentPage > 1 ? '': 'disabled' }` }>
+                <button className="page-link" onClick={() => goToPage(currentPage-1)} aria-label="Previous">
                     <span aria-hidden="true">«</span>
-                </a>
+                </button>
             </li>
         )
         for (let i=1; i <= lastPage;i++){
             pagerItems.push(
-                <li key={i} className={`page-item ${i===currentPage? 'active': '' }`}>
-                    <a className="page-link" href="#" onClick={() => goToPage(i)}>{i}</a>
+                <li key={"page-"+i.toString()} className={`page-item ${i===currentPage? 'active': '' }`}>
+                    <button className="page-link" onClick={() => goToPage(i)}>{i}</button>
                 </li>
             )
         }
         pagerItems.push(
-            <li className={`page-item ${currentPage < lastPage ? '': 'disabled' }` }>
-                <a className="page-link" href="#" onClick={() => goToPage(currentPage+1)} aria-label="Next">
+            <li key={"next-page"} className={`page-item ${currentPage < lastPage ? '': 'disabled' }` }>
+                <button className="page-link" onClick={() => goToPage(currentPage+1)} aria-label="Next">
                     <span aria-hidden="true">»</span>
-                </a>
+                </button>
             </li>
         )
         return pagerItems

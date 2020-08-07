@@ -22,7 +22,7 @@ const TopBar = props => {
                 </form>
                 <ul className="nav navbar-nav flex-nowrap ml-auto">
                     <li className="nav-item dropdown d-sm-none no-arrow">
-                        <a className="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#">
+                        <a className="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="/#">
                             <i className="fas fa-search"></i></a>
                         <div className="dropdown-menu dropdown-menu-right p-3 animated--grow-in" role="menu"
                              aria-labelledby="searchDropdown">
@@ -43,16 +43,16 @@ const TopBar = props => {
                     <li className="nav-item dropdown no-arrow" role="presentation">
                         <div className="nav-item dropdown no-arrow">
                             <a className="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false"
-                               href="#">
+                               href="/#">
                                 <span className="d-none d-lg-inline mr-2 text-gray-600 small">Valerie Luna</span>
-                                <img className="border rounded-circle img-profile"
+                                <img className="border rounded-circle img-profile" alt=""
                                      src="assets/img/avatars/avatar1.jpeg"/></a>
                             <div className="dropdown-menu shadow dropdown-menu-right animated--grow-in" role="menu">
                                 <Link className="dropdown-item" role="presentation" to="/profile">
-                                    <i className="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>&nbsp;Profile</Link>
+                                    <i className="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>Profile</Link>
                                 <div className="dropdown-divider"></div>
-                                <Link className="dropdown-item" role="presentation" href="#">
-                                    <i className="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>&nbsp;Logout</Link>
+                                <Link className="dropdown-item" role="presentation" to="/profile">
+                                    <i className="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>Logout</Link>
                             </div>
                         </div>
                     </li>

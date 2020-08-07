@@ -88,14 +88,14 @@ const TaskList = props => {
             </div>
             <div className="card shadow">
                 <div className="card-header py-3">
-                    <p className="text-primary m-0 font-weight-bold">Tasks list
+                    <div className="text-primary m-0 font-weight-bold">Tasks list
                         {!isLoaded && (
                             <div className="ml-2 spinner-border spinner-border-sm" role="status">
                                 <span className="sr-only">Loading...</span>
                             </div>
                         )
                         }
-                    </p>
+                    </div>
                 </div>
                 <div className="card-body">
                     <div className="row">

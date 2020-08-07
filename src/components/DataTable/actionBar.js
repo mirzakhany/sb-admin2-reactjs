@@ -18,12 +18,12 @@ const ActionBar = props => {
         <div id={id} className={className} aria-controls="dataTable">
             <label>Actions:
                 <select className={selectClassName} value={value} onChange={handleChange}>
-                    <option value="none" selected="">-------</option>
+                    <option key={"none"} value="none">-------</option>
                     {actions.map(a =>(
-                        <option value={a.retValue}>{a.text}</option>
+                        <option key={a.retValue} value={a.retValue}>{a.text}</option>
                     ))}
                 </select>
-                <a className={btnClassName} role="button" onClick={() => handleAction()} href="#">Go</a>
+                <button className={btnClassName} onClick={() => handleAction()}>Go</button>
             </label>
         </div>
     )
