@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Link} from "react-router-dom";
 import {useToasts } from 'react-toast-notifications'
+import axios from 'axios'
 import {DataTable, Paginator, ActionBar, SearchInput} from "../../components";
 
 const TaskList = props => {
@@ -41,13 +42,13 @@ const TaskList = props => {
     ]
 
     const getTasks = () => {
-        return fetch("http://localhost:3001/tasks").then(res => res.json())
+        return axios.get("http://localhost:3001/tasks")
     }
 
     useEffect(() => {
         getTasks().then(
             (result) => {
-                setItems(result);
+                setItems(result.data);
                 setIsLoaded(true);
             },
             (error) => {

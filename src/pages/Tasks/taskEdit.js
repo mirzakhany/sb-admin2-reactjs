@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {useParams} from 'react-router-dom';
 import {useToasts } from 'react-toast-notifications'
+import axios from "axios";
 
 const TaskEdit = props => {
 
@@ -16,9 +17,19 @@ const TaskEdit = props => {
         assignee: "",
     })
     const [isLoaded, setIsLoaded] = useState(false);
+    const [isSaved, setIsSaved] = useState(true);
 
     const getTask = (taskID) => {
-        return fetch("http://localhost:3001/tasks/" + taskID).then(res => res.json())
+        return axios.get("http://localhost:3001/tasks/"+ taskID)
+    }
+
+    const updateTask = (data) => {
+        const url = taskID === undefined ? "http://localhost:3001/tasks" : "http://localhost:3001/tasks/"+ taskID;
+        return axios({
+            method: taskID === undefined ? "post" : "put",
+            url: url,
+            data: data
+        })
     }
 
     useEffect(() => {
@@ -27,7 +38,8 @@ const TaskEdit = props => {
             return
         }
         getTask(taskID).then(
-            (result) => {
+            (res) => {
+                const result = res.data;
                 setFormData({
                     id: result.id,
                     title: result.title,
@@ -53,7 +65,33 @@ const TaskEdit = props => {
     }
 
     const handleSubmit = (event) => {
-        console.log('data ', formData);
+        setIsSaved(false);
+        updateTask(formData).then(
+            (res) => {
+                const result = res.data;
+                setFormData({
+                    id: result.id,
+                    title: result.title,
+                    sprint: result.sprint,
+                    status: result.status,
+                    estimate: result.estimate,
+                    assignee: result.assignee,
+                })
+                setIsLoaded(true);
+                if (taskID === undefined) {
+                    addToast("Task created", {appearance: 'success', autoDismiss: true})
+                }else{
+                    addToast("Task updated", {appearance: 'success', autoDismiss: true})
+                }
+                setIsSaved(true);
+            },
+            (error) => {
+                setIsLoaded(true);
+                setIsSaved(true);
+                addToast(error.message, {appearance: 'error'})
+            }
+        )
+
         event.preventDefault();
     }
 
@@ -138,7 +176,7 @@ const TaskEdit = props => {
                                 </div>
 
                                 <div className="form-group text-right">
-                                    {formData["id"] && (
+                                    {taskID && (
                                         <button className="btn btn-danger btn-sm" type="submit">
                                             {/*<span className="mr-2 spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>*/}
                                             Delete
@@ -149,7 +187,8 @@ const TaskEdit = props => {
                                         Save and new
                                     </button>
                                     <button className="btn btn-primary btn-sm ml-2" type="submit">
-                                        {/*<span className="mr-2 spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>*/}
+                                        {!isSaved &&
+                                            <span className="mr-2 spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>}
                                         Save Task
                                     </button>
                                 </div>
