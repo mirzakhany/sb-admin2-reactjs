@@ -1,40 +1,32 @@
-import React from "react";
+import React, {useState} from "react";
 
-class ActionBar extends React.Component {
+const ActionBar = props => {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            value: "none"
-        }
+    const {onAction, className,selectClassName, btnClassName, actions, id} = props;
+    const [value, setValue] = useState("none")
 
-        this.handleChange = this.handleChange.bind(this)
+    const handleAction = () => {
+        onAction(value);
     }
 
-    handleAction() {
-        this.props.onAction(this.state.value);
+    const handleChange = (event) => {
+        setValue(event.target.value);
     }
 
-    handleChange(event) {
-        this.setState({value: event.target.value})
-    }
+    return (
 
-    render() {
-        return (
-
-            <div id={this.props.id} className={this.props.className} aria-controls="dataTable">
-                <label>Actions:
-                    <select className={this.props.selectClassName} value={this.state.value} onChange={this.handleChange}>
-                        <option value="none" selected="">-------</option>
-                        {this.props.actions.map(a =>(
-                            <option value={a.retValue}>{a.text}</option>
-                        ))}
-                    </select>
-                    <a className={this.props.btnClassName} role="button" onClick={() => this.handleAction()} href="#">Go</a>
-                </label>
-            </div>
-        )
-    }
+        <div id={id} className={className} aria-controls="dataTable">
+            <label>Actions:
+                <select className={selectClassName} value={value} onChange={handleChange}>
+                    <option value="none" selected="">-------</option>
+                    {actions.map(a =>(
+                        <option value={a.retValue}>{a.text}</option>
+                    ))}
+                </select>
+                <a className={btnClassName} role="button" onClick={() => handleAction()} href="#">Go</a>
+            </label>
+        </div>
+    )
 }
 
 export default ActionBar;
