@@ -1,13 +1,15 @@
 import React, {useEffect, useState} from 'react';
 import {Link} from "react-router-dom";
+import {useToasts } from 'react-toast-notifications'
 import {DataTable, Paginator, ActionBar, SearchInput} from "../../components";
 
 const TaskList = props => {
 
     const {history} = props;
+    const { addToast } = useToasts()
+
     const [items, setItems] = useState([])
     const [isLoaded, setIsLoaded] = useState(false);
-    const [error, setError] = useState(null);
     const [paginatedItems, setPaginatedItems] = useState({
         currentPage: 1,
         fromItem: 1,
@@ -50,7 +52,7 @@ const TaskList = props => {
             },
             (error) => {
                 setIsLoaded(true);
-                setError(error)
+                addToast(error.message, {appearance: 'error'})
             }
         )
     }, [])

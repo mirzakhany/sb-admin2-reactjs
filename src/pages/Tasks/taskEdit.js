@@ -1,9 +1,12 @@
 import React, {useState, useEffect} from 'react';
 import {useParams} from 'react-router-dom';
+import {useToasts } from 'react-toast-notifications'
 
 const TaskEdit = props => {
 
     let {taskID} = useParams();
+    const { addToast } = useToasts()
+
     const [formData, setFormData] = useState({
         id: "",
         title: "",
@@ -13,32 +16,33 @@ const TaskEdit = props => {
         assignee: "",
     })
     const [isLoaded, setIsLoaded] = useState(false);
-    const [error, setError] = useState(null);
+
+    const getTask = (taskID) => {
+        return fetch("http://localhost:3001/tasks/" + taskID).then(res => res.json())
+    }
 
     useEffect(() => {
         if (taskID === undefined) {
             setIsLoaded(true);
             return
         }
-        fetch("http://localhost:3001/tasks/" + taskID)
-            .then(res => res.json())
-            .then(
-                (result) => {
-                    setFormData({
-                        id: result.id,
-                        title: result.title,
-                        sprint: result.sprint,
-                        status: result.status,
-                        estimate: result.estimate,
-                        assignee: result.assignee,
-                    })
-                    setIsLoaded(true);
-                },
-                (error) => {
-                    setIsLoaded(true);
-                    setError(error)
-                }
-            )
+        getTask(taskID).then(
+            (result) => {
+                setFormData({
+                    id: result.id,
+                    title: result.title,
+                    sprint: result.sprint,
+                    status: result.status,
+                    estimate: result.estimate,
+                    assignee: result.assignee,
+                })
+                setIsLoaded(true);
+            },
+            (error) => {
+                setIsLoaded(true);
+                addToast(error.message, {appearance: 'error'})
+            }
+        )
     }, [taskID])
 
     const handleInputChange = (event) => {
