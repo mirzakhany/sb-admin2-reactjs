@@ -12,3 +12,11 @@
   padding-top: 0.7rem;
   padding-bottom: 0.7rem;
 }
+
+#dataTable tbody tr {
+  cursor: pointer;
+}
+
+#dataTable tbody tr:hover {
+  background-color: #f7f7f7;
+}

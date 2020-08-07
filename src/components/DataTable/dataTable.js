@@ -28,6 +28,10 @@ class DataTable extends React.Component {
         }
     }
 
+    onRowClick = (key) => {
+        this.props.onRowClick(key)
+    }
+
     renderHeader() {
 
         const chkCol = this.props.showCheckBoxes ? (
@@ -52,7 +56,7 @@ class DataTable extends React.Component {
         return (
             <tbody>
             {this.props.items.map(dataItem => (
-                <tr key={dataItem[this.props.keyField]}>
+                <tr key={dataItem[this.props.keyField]} onClick={() => this.onRowClick(dataItem[this.props.keyField])}>
                     {this.props.showCheckBoxes &&
                         <td>
                             <input data-key={dataItem[this.props.keyField]} type="checkbox"

@@ -12,16 +12,34 @@ class Paginator extends React.Component {
 
     componentDidUpdate(prevProps) {
         if (prevProps.items !== this.props.items) {
-            this.props.onPageChange(this.props.items.slice(0, this.state.perPage))
+            this.props.onPageChange({
+                    currentPage: this.state.currentPage,
+                    fromItem: 1,
+                    toItem: this.state.perPage,
+                    totalItems: this.props.items.length,
+                    items: this.props.items.slice(0, this.state.perPage)
+                }
+            )
         }
     }
 
     goToPage(pageNumber) {
         if (pageNumber !== this.state.currentPage){
-            this.setState({currentPage: pageNumber})
             const startPage = (pageNumber -1 ) * this.state.perPage;
             const toPage = startPage + this.state.perPage;
-            this.props.onPageChange(this.props.items.slice(startPage, toPage))
+            this.setState({
+                startPage: startPage,
+                toPage: toPage,
+                currentPage: pageNumber
+            })
+
+            this.props.onPageChange({
+                currentPage: pageNumber,
+                fromItem: startPage + 1,
+                toItem: toPage > this.props.items.length ? this.props.items.length: toPage,
+                totalItems: this.props.items.length,
+                items: this.props.items.slice(startPage, toPage)
+            })
         }
     }
 

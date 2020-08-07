@@ -7,10 +7,24 @@ class TaskList extends React.Component {
     constructor(props) {
         super(props);
 
+        this.searchOptions = {
+            includeScore: true,
+            keys: ['title', 'sprint', 'assignee'],
+            threshold: 0.4,
+            distance: 35,
+        }
+
         this.state = {
-            allChecked: false,
             items: [],
-            paginatedItems: [],
+            paginatedItems: {
+                currentPage: 1,
+                fromItem: 1,
+                toItem: 10,
+                totalItems: 1,
+                items: [],
+            },
+            searchResults: [],
+            selectedItems: [],
             tableCols: [
                 { headerName: "Title", field: "title" },
                 { headerName: "Sprint", field: "sprint" },
@@ -23,6 +37,7 @@ class TaskList extends React.Component {
             ]
         }
     }
+
 
     componentDidMount() {
         fetch("http://localhost:3001/tasks")
@@ -43,8 +58,18 @@ class TaskList extends React.Component {
             )
     }
 
+    onRowClick = (selectedItem) => {
+        const { history } = this.props;
+        history.push('/tasks/edit/'+selectedItem);
+        console.log('selectedItem', selectedItem)
+    }
+
     handlePageChange = (pageData) => {
         this.setState({paginatedItems: pageData});
+    }
+
+    handleSearch = (result) => {
+        this.setState({searchResults: result})
     }
 
     handleAction = (action) => {
@@ -52,7 +77,7 @@ class TaskList extends React.Component {
     }
 
     handleSelectionChange = (selectedItems) => {
-        console.log('selected', selectedItems)
+        this.setState({selectedItems: selectedItems})
     }
 
 
@@ -64,12 +89,19 @@ class TaskList extends React.Component {
                         <h3 className="text-dark mb-4">Tasks</h3>
                     </div>
                     <div className="col text-right">
-                        <Link className="btn btn-primary" role="button" to="/tasks/create">Add Task</Link>
+                        <Link className="btn btn-primary" role="button" to="/tasks/edit">Add Task</Link>
                     </div>
                 </div>
                 <div className="card shadow">
                     <div className="card-header py-3">
-                        <p className="text-primary m-0 font-weight-bold">Tasks info</p>
+                        <p className="text-primary m-0 font-weight-bold">Tasks list
+                            {!this.state.isLoaded && (
+                                <div className="ml-2 spinner-border spinner-border-sm" role="status">
+                                    <span className="sr-only">Loading...</span>
+                                </div>
+                                )
+                            }
+                        </p>
                     </div>
                     <div className="card-body">
                         <div className="row">
@@ -89,6 +121,10 @@ class TaskList extends React.Component {
                                         <SearchInput
                                             className="form-control form-control-sm"
                                             placeHolder="Search"
+                                            searchOptions={this.searchOptions}
+                                            items={this.state.items}
+                                            onSearch={this.handleSearch}
+                                            searchThreshold={3}
                                         />
                                     </label>
                                 </div>
@@ -97,21 +133,22 @@ class TaskList extends React.Component {
                         <div className="table-responsive table mt-2" id="dataTable" role="grid"
                              aria-describedby="dataTable_info">
                             <DataTable
-                                items={this.state.paginatedItems}
+                                items={this.state.paginatedItems.items}
                                 isLoading={this.state.isLoaded}
                                 columnDefs={this.state.tableCols}
                                 showCheckBoxes={true}
                                 onSelectionChange={this.handleSelectionChange}
                                 keyField="id"
+                                onRowClick={this.onRowClick}
                             />
                         </div>
                         <div className="row">
                             <div className="col-md-6 align-self-center">
                                 <p id="dataTable_info" className="dataTables_info" role="status"
-                                   aria-live="polite">Showing 1 to 10 of 27</p>
+                                   aria-live="polite">Showing {this.state.paginatedItems.fromItem} to {this.state.paginatedItems.toItem} of {this.state.paginatedItems.totalItems}</p>
                             </div>
                             <div className="col-md-6">
-                                <Paginator items={this.state.items} perPage={10} onPageChange={this.handlePageChange}/>
+                                <Paginator items={this.state.searchResults} perPage={10} onPageChange={this.handlePageChange}/>
                             </div>
                         </div>
                     </div>
