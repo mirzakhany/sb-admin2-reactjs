@@ -1,42 +1,37 @@
-import React from "react";
+import React, {useState} from "react";
 
-class DataTable extends React.Component {
+const DataTable = props => {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            checkBoxes: {},
-            columnDefs: props.columnDefs
-        }
-    }
+    const {items, columnDefs, keyField, showCheckBoxes, onSelectionChange, onRowClick, isLoading} = props
+    const [checkBoxes, setCheckBoxes] = useState({})
 
-    checkAllRows = (event) => {
+    const checkAllRows = (event) => {
         let newStatue = {};
-        this.props.items.map(item => (newStatue[item[this.props.keyField]] = event.target.checked))
-        this.setState({checkBoxes: newStatue})
-        if (this.props.onSelectionChange ) {
-            this.props.onSelectionChange(newStatue)
+        items.map(item => (newStatue[item[keyField]] = event.target.checked))
+        setCheckBoxes(newStatue)
+        if (onSelectionChange) {
+            onSelectionChange(newStatue)
         }
     }
 
-    checkOneRow = (event) => {
-        let currentStatus = this.state.checkBoxes;
+    const checkOneRow = (event) => {
+        let currentStatus = checkBoxes;
         currentStatus[event.target.dataset.key] = event.target.checked;
-        this.setState({checkBoxes: currentStatus})
-        if (this.props.onSelectionChange ) {
-            this.props.onSelectionChange(currentStatus)
+        setCheckBoxes(currentStatus)
+        if (onSelectionChange ) {
+            onSelectionChange(currentStatus)
         }
     }
 
-    onRowClick = (key) => {
-        this.props.onRowClick(key)
+    const onRowClickHandler = (key) => {
+        onRowClick(key)
     }
 
-    renderHeader() {
+    const renderHeader = () =>{
 
-        const chkCol = this.props.showCheckBoxes ? (
+        const chkCol = showCheckBoxes ? (
             <th className="action-checkbox-column">
-                <input type="checkbox" id="table-action-checkbox" onChange={this.checkAllRows}/>
+                <input type="checkbox" id="table-action-checkbox" onChange={checkAllRows}/>
             </th>
         ) : null
 
@@ -44,7 +39,7 @@ class DataTable extends React.Component {
             <thead>
             <tr>
                 {chkCol}
-                {this.state.columnDefs.map(col => (
+                {columnDefs.map(col => (
                     <th key={col.field}>{col.headerName}</th>
                 ))}
             </tr>
@@ -52,21 +47,21 @@ class DataTable extends React.Component {
         )
     }
 
-    renderBody() {
+    const renderBody = () =>{
         return (
             <tbody>
-            {this.props.items.map(dataItem => (
-                <tr key={dataItem[this.props.keyField]} onClick={() => this.onRowClick(dataItem[this.props.keyField])}>
-                    {this.props.showCheckBoxes &&
+            {items.map(dataItem => (
+                <tr key={dataItem[keyField]}>
+                    {showCheckBoxes &&
                         <td>
-                            <input data-key={dataItem[this.props.keyField]} type="checkbox"
+                            <input data-key={dataItem[keyField]} type="checkbox"
                                    className="row-checkbox"
-                                   onChange={this.checkOneRow}
-                                   checked={this.state.checkBoxes[dataItem[this.props.keyField]] || false ? 'checked': null}/>
+                                   onChange={checkOneRow}
+                                   checked={checkBoxes[dataItem[keyField]] || false ? 'checked': null}/>
                         </td>
                     }
-                    {this.state.columnDefs.map(col => (
-                        <td key={col.field}>{dataItem[col.field]}</td>
+                    {columnDefs.map(col => (
+                        <td key={col.field} onClick={() => onRowClickHandler(dataItem[keyField])}>{dataItem[col.field]}</td>
                     ))}
                 </tr>
             ))}
@@ -74,46 +69,44 @@ class DataTable extends React.Component {
         )
     }
 
-    renderMsg(message) {
+    const renderMsg = (message) => {
         return (
             <table className="table my-0" id="dataTable">
-                {this.renderHeader()}
+                {renderHeader()}
                 <tbody>
                 <tr>
-                    <td colSpan={this.state.columnDefs.length}>{message}</td>
+                    <td colSpan={columnDefs.length}>{message}</td>
                 </tr>
                 </tbody>
             </table>
         )
     }
 
-    render() {
-        const chkCol = this.props.showCheckBoxes ? <td></td> : null
-        if (!this.props.isLoading) {
+    const chkCol = showCheckBoxes ? <td></td> : null
+    if (!isLoading) {
+        return (
+            renderMsg("Loading ...")
+        )
+    } else {
+        if (items.length === 0){
             return (
-                this.renderMsg("Loading ...")
-            )
-        } else {
-            if (this.props.items.length === 0){
-                return (
-                    this.renderMsg("No data")
-                )
-            }
-            return (
-                <table className="table my-0" id="dataTable">
-                    {this.renderHeader()}
-                    {this.renderBody()}
-                    <tfoot>
-                    <tr>
-                        {chkCol}
-                        {this.state.columnDefs.map(col => (
-                            <th key={col.field}>{col.headerName}</th>
-                        ))}
-                    </tr>
-                    </tfoot>
-                </table>
+                renderMsg("No data")
             )
         }
+        return (
+            <table className="table my-0" id="dataTable">
+                {renderHeader()}
+                {renderBody()}
+                <tfoot>
+                <tr>
+                    {chkCol}
+                    {columnDefs.map(col => (
+                        <th key={col.field}>{col.headerName}</th>
+                    ))}
+                </tr>
+                </tfoot>
+            </table>
+        )
     }
 }
 
