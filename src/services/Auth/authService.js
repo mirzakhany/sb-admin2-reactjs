@@ -50,8 +50,23 @@ const AuthService = {
     isAuthenticated(){
         return localStorage.getItem("user") !== null
     },
+    forgotPassword(email){
+        return axios.post(
+            BASE_AUTH_URL + "/forgot-password",
+            {email: email}
+        ).then((res) =>{
+            return {
+                status: res.status,
+                ...res.data
+            }
+        },(error) => {
+            return {
+                status: error.response.status,
+                error: error
+            }
+        })
+    },
     logout() {
-        AuthService.isAuthenticated = false;
         localStorage.removeItem("user");
     },
     getCurrentUser() {

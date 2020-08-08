@@ -1,7 +1,15 @@
 import React from "react";
-import {Link} from "react-router-dom";
+import {Link, useHistory} from "react-router-dom";
+import AuthService from "services/Auth/authService";
 
 const TopBar = props => {
+
+    let history = useHistory();
+
+    const handleLogout = () => {
+        AuthService.logout()
+        history.push("/login")
+    }
     return (
         <nav className="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top">
             <div className="container-fluid">
@@ -51,8 +59,8 @@ const TopBar = props => {
                                 <Link className="dropdown-item" role="presentation" to="/profile">
                                     <i className="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>Profile</Link>
                                 <div className="dropdown-divider"></div>
-                                <Link className="dropdown-item" role="presentation" to="/profile">
-                                    <i className="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>Logout</Link>
+                                <button className="dropdown-item" role="presentation" onClick={handleLogout}>
+                                    <i className="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>Logout</button>
                             </div>
                         </div>
                     </li>

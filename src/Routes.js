@@ -2,7 +2,15 @@ import React from 'react';
 import {Switch, Redirect} from 'react-router-dom';
 import {RouteWithLayout, ProtectedRouteWithLayout} from './components';
 import {AdminLayout, AuthLayout} from './layouts'
-import {Dashboard, Profile, TaskList, TaskEdit, NotFound, Login} from './pages'
+import {
+        Dashboard,
+        Profile,
+        TaskList,
+        TaskEdit,
+        NotFound,
+        Login,
+        ForgotPassword
+} from './pages'
 
 const Routes = () => {
     return (
@@ -41,6 +49,12 @@ const Routes = () => {
                 exact
                 layout={AuthLayout}
                 path="/login"
+            />
+            <RouteWithLayout
+                component={ForgotPassword}
+                exact
+                layout={AuthLayout}
+                path="/forgot-password"
             />
             <ProtectedRouteWithLayout
                 component={NotFound}

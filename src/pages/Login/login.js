@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import AuthService from "services/Auth/authService";
-import {useHistory, useLocation} from "react-router-dom";
+import {useHistory, useLocation, Link} from "react-router-dom";
 
 const Login = props => {
 
@@ -10,6 +10,7 @@ const Login = props => {
 
     const [formData, setFormData] = useState({email: "", password: ""});
     const [error, setError] = useState(null);
+    const [isLoaded, setIsLoaded] = useState(true);
 
     const changeHandler = (event) => {
         const target = event.target;
@@ -19,8 +20,10 @@ const Login = props => {
     }
 
     const loginHandler = (event) => {
+        setIsLoaded(false)
         AuthService.login(formData["email"], formData["password"])
             .then((res)=>{
+                setIsLoaded(true)
                 if (res.status === 200){
                     history.replace(from);
                 }else{
@@ -75,7 +78,11 @@ const Login = props => {
                                             </div>
                                         </div>
                                     </div>
-                                    <button className="btn btn-primary btn-block text-white btn-user mt-5" type="submit">Login</button>
+                                    <button className="btn btn-primary btn-block text-white btn-user mt-5" type="submit">
+                                        {!isLoaded &&
+                                        <span className="mr-2 spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>}
+                                        Login
+                                    </button>
                                     <hr/>
                                     <button className="btn btn-primary btn-block text-white btn-google btn-user">
                                         <i className="fab fa-google"/> Login with Google
@@ -83,7 +90,7 @@ const Login = props => {
                                     <hr/>
                                 </form>
                                 <div className="text-center">
-                                    <a className="small" href="forgot-password.html">Forgot Password?</a>
+                                    <Link className="small" to="/forgot-password">Forgot Password?</Link>
                                 </div>
                             </div>
                         </div>
