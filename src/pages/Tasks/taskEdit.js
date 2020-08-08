@@ -2,10 +2,12 @@ import React, {useState, useEffect} from 'react';
 import {useParams} from 'react-router-dom';
 import {useToasts } from 'react-toast-notifications'
 import axios from "axios";
+import {configs} from 'services/Network/configs';
 
 const TaskEdit = props => {
 
     let {taskID} = useParams();
+    const TASKS_URL = configs.API_URL + "/tasks"
     const { addToast } = useToasts()
 
     const [formData, setFormData] = useState({
@@ -20,11 +22,11 @@ const TaskEdit = props => {
     const [isSaved, setIsSaved] = useState(true);
 
     const getTask = (taskID) => {
-        return axios.get("http://localhost:3001/tasks/"+ taskID)
+        return axios.get(TASKS_URL + "/" + taskID)
     }
 
     const updateTask = (data) => {
-        const url = taskID === undefined ? "http://localhost:3001/tasks" : "http://localhost:3001/tasks/"+ taskID;
+        const url = taskID === undefined ? TASKS_URL : TASKS_URL + "/" + taskID;
         return axios({
             method: taskID === undefined ? "post" : "put",
             url: url,

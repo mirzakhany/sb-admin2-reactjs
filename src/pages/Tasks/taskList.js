@@ -3,11 +3,13 @@ import {Link} from "react-router-dom";
 import {useToasts } from 'react-toast-notifications'
 import axios from 'axios'
 import {DataTable, Paginator, ActionBar, SearchInput} from "components";
+import {configs} from 'services/Network/configs';
 
 const TaskList = props => {
 
     const {history} = props;
     const { addToast } = useToasts()
+    const TASKS_URL = configs.API_URL + "/tasks"
 
     const [items, setItems] = useState([])
     const [isLoaded, setIsLoaded] = useState(false);
@@ -42,7 +44,7 @@ const TaskList = props => {
     ]
 
     const getTasks = () => {
-        return axios.get("http://localhost:3001/tasks")
+        return axios.get(TASKS_URL)
     }
 
     useEffect(() => {
