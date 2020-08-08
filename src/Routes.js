@@ -1,8 +1,8 @@
 import React from 'react';
 import {Switch, Redirect} from 'react-router-dom';
-import {RouteWithLayout} from './components';
-import {AdminLayout} from './layouts'
-import {Dashboard, Profile,TaskList, TaskEdit, NotFound} from './pages'
+import {RouteWithLayout, ProtectedRouteWithLayout} from './components';
+import {AdminLayout, AuthLayout} from './layouts'
+import {Dashboard, Profile, TaskList, TaskEdit, NotFound, Login} from './pages'
 
 const Routes = () => {
     return (
@@ -12,32 +12,37 @@ const Routes = () => {
                 from="/"
                 to="/dashboard"
             />
-            <RouteWithLayout
+            <ProtectedRouteWithLayout
                 component={Dashboard}
                 exact
                 layout={AdminLayout}
                 path="/dashboard"
             />
-            <RouteWithLayout
+            <ProtectedRouteWithLayout
                 component={TaskList}
                 exact
                 layout={AdminLayout}
                 path="/tasks"
             />
-            <RouteWithLayout
+            <ProtectedRouteWithLayout
                 component={TaskEdit}
                 exact
                 layout={AdminLayout}
                 path={["/tasks/edit", "/tasks/edit/:taskID"]}
             />
-            <RouteWithLayout
+            <ProtectedRouteWithLayout
                 component={Profile}
                 exact
                 layout={AdminLayout}
                 path="/profile"
             />
-
             <RouteWithLayout
+                component={Login}
+                exact
+                layout={AuthLayout}
+                path="/login"
+            />
+            <ProtectedRouteWithLayout
                 component={NotFound}
                 exact
                 layout={AdminLayout}
