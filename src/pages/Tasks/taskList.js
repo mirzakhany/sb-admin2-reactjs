@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {Link} from "react-router-dom";
 import {useToasts } from 'react-toast-notifications'
 import axios from 'axios'
-import {DataTable, Paginator, ActionBar, SearchInput} from "../../components";
+import {DataTable, Paginator, ActionBar, SearchInput} from "components";
 
 const TaskList = props => {
 
