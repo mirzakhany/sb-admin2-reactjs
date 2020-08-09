@@ -3,6 +3,11 @@
 I made this project to learn Reactjs, and I know that it has lots of problems and mistakes.<br/>
 all reviews and pull requests are welcome :)
 
+you can see result in flowing url, use `test@test.com` and `qwer1234` to login.
+
+`
+https://sb-admin-react.herokuapp.com
+`
 
 In the project directory, you can run:
 
