@@ -1,4 +1,4 @@
 export const configs = {
-    API_URL: "http://localhost:3001",
+    API_URL: "https://sb-mock-server.herokuapp.com",
     BEARER_PARAM: "Bearer",
 }
