@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react";
 import AuthService from "services/Auth/authService";
+import defaultAvatar from "assets/img/defaultAvatar.jpg";
 
 const Profile = props => {
 
@@ -76,7 +77,7 @@ const Profile = props => {
                 <div className="col-lg-4 col-xl-3">
                     <div className="card mb-3">
                         <div className="card-body text-center shadow">
-                            <img className="rounded-circle mb-3 mt-4" src="" alt="" width="160" height="160"/>
+                            <img className="rounded-circle mb-3 mt-4" src={defaultAvatar} alt="" width="160" height="160"/>
                             <div className="mb-3">
                                 <button className="btn btn-primary btn-sm" type="button">Change Photo</button>
                             </div>

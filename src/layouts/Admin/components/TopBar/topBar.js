@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {Link, useHistory} from "react-router-dom";
 import AuthService from "services/Auth/authService";
+import defaultAvatar from "assets/img/defaultAvatar.jpg";
 
 const TopBar = props => {
 
@@ -60,7 +61,7 @@ const TopBar = props => {
                                href="/#">
                                 <span className="d-none d-lg-inline mr-2 text-gray-600 small">{fullName}</span>
                                 <img className="border rounded-circle img-profile" alt=""
-                                     src="assets/img/avatars/avatar1.jpeg"/></a>
+                                     src={defaultAvatar}/></a>
                             <div className="dropdown-menu shadow dropdown-menu-right animated--grow-in" role="menu">
                                 <Link className="dropdown-item" role="presentation" to="/profile">
                                     <i className="fas fa-user fa-sm fa-fw mr-2 text-gray-400"/>Profile</Link>
