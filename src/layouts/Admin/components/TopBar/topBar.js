@@ -1,10 +1,16 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {Link, useHistory} from "react-router-dom";
 import AuthService from "services/Auth/authService";
 
 const TopBar = props => {
 
     let history = useHistory();
+    const [fullName, setFullName] = useState("");
+
+    useEffect(()=>{
+        const user = AuthService.getCurrentUser()
+        setFullName(user.firstname + " "+ user.lastname)
+    }, [])
 
     const handleLogout = () => {
         AuthService.logout()
@@ -52,7 +58,7 @@ const TopBar = props => {
                         <div className="nav-item dropdown no-arrow">
                             <a className="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false"
                                href="/#">
-                                <span className="d-none d-lg-inline mr-2 text-gray-600 small">Valerie Luna</span>
+                                <span className="d-none d-lg-inline mr-2 text-gray-600 small">{fullName}</span>
                                 <img className="border rounded-circle img-profile" alt=""
                                      src="assets/img/avatars/avatar1.jpeg"/></a>
                             <div className="dropdown-menu shadow dropdown-menu-right animated--grow-in" role="menu">

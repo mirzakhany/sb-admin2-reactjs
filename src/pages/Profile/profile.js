@@ -1,6 +1,25 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
+import AuthService from "services/Auth/authService";
 
 const Profile = props => {
+
+    const [formData, setFormData] = useState({
+        id: "",
+        email: "",
+        firstname: "",
+        lastname: "",
+    })
+
+    useEffect(()=>{
+        const user = AuthService.getCurrentUser()
+        setFormData({
+            id: user.id,
+            email: user.email,
+            firstname: user.firstname,
+            lastname: user.lastname,
+        })
+    }, [])
+
 
     return (
         <div className="container-fluid">
@@ -16,33 +35,32 @@ const Profile = props => {
                                 <div className="card-body">
                                     <form>
                                         <div className="form-row">
-                                            <div className="col">
-                                                <div className="form-group">
-                                                    <label htmlFor="username"><strong>Username</strong></label>
-                                                    <input className="form-control" type="text" placeholder="user.name"
-                                                    name="username"/>
-                                                </div>
-                                            </div>
-                                            <div className="col">
+                                             <div className="col col-lg-6 col-xl-6 col-md-6">
                                                 <div className="form-group">
                                                     <label htmlFor="email"><strong>Email Address</strong></label>
-                                                    <input className="form-control" type="email"
-                                                                                   placeholder="user@example.com"
-                                                                                   name="email"/>
+                                                    <input className="form-control" value={formData["email"]}
+                                                           type="email" placeholder="user@example.com" name="email"/>
                                                 </div>
                                             </div>
                                         </div>
                                         <div className="form-row">
                                             <div className="col">
                                                 <div className="form-group"><label htmlFor="first_name"><strong>First
-                                                    Name</strong></label><input className="form-control" type="text"
-                                                                                placeholder="John" name="first_name"/></div>
+                                                    Name</strong></label>
+                                                    <input className="form-control" type="text"
+                                                           value={formData["firstname"]}
+                                                           placeholder="John"
+                                                           name="first_name"/>
+                                                </div>
                                             </div>
                                             <div className="col">
                                                 <div className="form-group">
                                                     <label htmlFor="last_name"><strong>Last Name</strong></label>
-                                                    <input className="form-control" type="text"
-                                                                                placeholder="Doe" name="last_name"/>
+                                                    <input className="form-control"
+                                                           type="text"
+                                                           value={formData["lastname"]}
+                                                           placeholder="Doe"
+                                                           name="last_name"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -58,8 +76,7 @@ const Profile = props => {
                 <div className="col-lg-4 col-xl-3">
                     <div className="card mb-3">
                         <div className="card-body text-center shadow">
-                            <img className="rounded-circle mb-3 mt-4" src="" alt="" width="160"
-                                                                           height="160"/>
+                            <img className="rounded-circle mb-3 mt-4" src="" alt="" width="160" height="160"/>
                             <div className="mb-3">
                                 <button className="btn btn-primary btn-sm" type="button">Change Photo</button>
                             </div>
