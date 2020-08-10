@@ -41,6 +41,7 @@ const TaskEdit = props => {
         }
         getTask(taskID).then(
             (res) => {
+                console.log(res)
                 const result = res.data;
                 setFormData({
                     id: result.id,
